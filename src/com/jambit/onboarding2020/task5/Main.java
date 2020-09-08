@@ -5,25 +5,28 @@ import java.util.List;
 
 public class Main {
 
-   public static void main(String[] args) throws Exception {
+   public static void main(String[] args) {
 
-      List<WillibaldAccount> jambitBank = new ArrayList<>();
+      List<HerbiAccount> jambitBank = new ArrayList<>();
 
-/*      Account accountCherry = new Account("Cherry", 12533362, 100);
-      Account accountCarina = new Account("Carina", 98799876, 42);*/
-      WillibaldAccount accountCherry = new WillibaldAccount("Cherry", Integer.toString(12533362), 100);
-      WillibaldAccount accountCarina = new WillibaldAccount("Carina", Integer.toString(98799876), 42);
+      HerbiAccount accountCherry = new HerbiAccount("Cherry", 12533362, 10);
+      HerbiAccount accountCarina = new HerbiAccount("Carina", 98799876, 42);
+
 
       jambitBank.add(accountCherry);
       jambitBank.add(accountCarina);
 
       accountCherry.setOverdraftFacility(true); // true/false
       accountCherry.deposit(100);
-      accountCherry.withdraw(50); //caution: dispokredit
-      accountCherry.getBalance();
+
+      try {
+         accountCherry.withdraw(500); //caution: dispokredit
+      } catch (Exception e) {
+         System.err.println("Problem beim Abheben. Fehlerursache: " + e.getMessage());
+      }
 
       //Zusatz
-      accountCherry.sendMoney(accountCarina, 250);
+      //accountCherry.sendMoney(accountCarina, 250);
 
       printBankStatus(jambitBank);
 
@@ -42,12 +45,12 @@ public class Main {
 
    }
 
-   private static void printBankStatus(List<WillibaldAccount> jambitBank) {
+   private static void printBankStatus(List<HerbiAccount> jambitBank) {
       System.out.println("jambitBank has " + jambitBank.size() + " accounts with overall " +
           jambitBank.stream().mapToInt
               (a -> (int) a.getBalance()).sum() + " €.");
 
-      for (WillibaldAccount account : jambitBank) {
+      for (HerbiAccount account : jambitBank) {
          System.out.println("--------------Account details------------");
          System.out.println("Owner: " + account.getOwner());
          System.out.println("Number: " + account.getAccountNumber());
@@ -55,5 +58,4 @@ public class Main {
          System.out.println("Balance: " + account.getBalance());
       }
    }
-
 }
